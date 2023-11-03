@@ -9,3 +9,6 @@ def load_raw_img(path: str) -> np.ndarray:
         rgb_img = raw_img.postprocess()
     
     return rgb_img
+
+def rad_to_deg(a):
+    return 180*a/np.pi
