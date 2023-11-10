@@ -1,6 +1,7 @@
 import cv2 as cv
 import numpy as np
 import rawpy
+import matplotlib.pyplot as plt
 
 def load_raw_img(path: str) -> np.ndarray:
     """
@@ -18,4 +19,12 @@ def mask_circ_img(img: np.ndarray, center: (int, int), radius: int) -> np.ndarra
     mask = np.zeros(img.shape, dtype=img.dtype)
     mask = cv.circle(mask, center, radius, 255, -1)
 
-    return cv.bitwise_and(img, mask)
+    return cv.bitwise_and(img+0.1, mask)
+
+if __name__ == "__main__":
+    print("Running test mask...")
+    img = cv.imread("isochromatic.jpg")
+    img_masked = mask_circ_img(img, (3050, 1880), 1470)
+
+    plt.imshow(img_masked, cmap='gray')
+    plt.show()
