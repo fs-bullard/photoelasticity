@@ -19,12 +19,12 @@ def mask_circ_img(img: np.ndarray, center: (int, int), radius: int) -> np.ndarra
     mask = np.zeros(img.shape, dtype=img.dtype)
     mask = cv.circle(mask, center, radius, 255, -1)
 
-    return cv.bitwise_and(img+0.1, mask)
+    return cv.bitwise_and(img, mask)
 
 if __name__ == "__main__":
     print("Running test mask...")
     img = cv.imread("isochromatic.jpg")
-    img_masked = mask_circ_img(img, (3050, 1880), 1470)
+    img_masked = mask_circ_img(img, (3030, 1770), 1050)
 
     plt.imshow(img_masked, cmap='gray')
     plt.show()
