@@ -12,8 +12,9 @@ def phase_unwrap(img: np.ndarray, stack, center, radius) -> np.ndarray:
 
     dummy[:,:] = -2
 
-    # Need to change if shape not circle
-    # -2 outside the mask, -1 inside the mask
+    for seed in stack:
+        dummy[seed] = img[seed]
+        
     cv.circle(dummy, center, radius, -1, -1)
 
     def unwrap(pixel, previous) -> float:
@@ -24,16 +25,16 @@ def phase_unwrap(img: np.ndarray, stack, center, radius) -> np.ndarray:
             ((round(img[pixel],5) - round(dummy[previous],5) + np.pi) % (2 * np.pi))
             + dummy[previous] - np.pi, 5)
 
+    i = 0
     while stack:
         x, y = stack[0]
-        neighbours = [coord for coord in [(x-1,y),(x+1,y),(x,y-1),(x,y+1)]]
-        unwrapped = [coord for coord in neighbours if dummy[coord] == -1]
+        unwrapped = [coord for coord in [(x-1,y),(x+1,y),(x,y-1),(x,y+1)] if dummy[coord] == -1]
 
         for pixel in unwrapped:
             dummy[pixel] = unwrap(pixel, stack[0])            
 
             x1, y1 = pixel
-            new_neighbours = [coord for coord in [(x1-1,y1),(x1+1,y1),(x1,y1-1),(x1,y1+1)]]
+            new_neighbours = [(x1-1,y1),(x1+1,y1),(x1,y1-1),(x1,y1+1)]
             neighbour_wrapped = False
             for coord in new_neighbours:
                 if dummy[coord] == -1:
@@ -45,6 +46,11 @@ def phase_unwrap(img: np.ndarray, stack, center, radius) -> np.ndarray:
             # pdb.set_trace()
         
         stack.pop(0)
+
+        # i+=1
+        # if i%10000==0:
+        #     plt.imshow(dummy, cmap='gray')
+        #     plt.show()
 
     return dummy
 
@@ -60,7 +66,7 @@ if __name__ == "__main__":
     plt.imshow(phase_map,cmap='gray')
     plt.show()
     
-    stack = [(100, 500), (900, 500)]
+    stack = [(500, 100)]
 
     img_unwrapped = phase_unwrap(phase_map, stack, (500,500), 400)
     # img_unwrapped = np.unwrap(img)
