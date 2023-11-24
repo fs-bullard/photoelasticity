@@ -65,7 +65,7 @@ def phase_unwrap(img: np.ndarray, stack, center, radius) -> np.ndarray:
 
     # Need to change if shape not circle
     # -2 outside the mask, -1 inside the mask
-    cv.circle(dummy, center, radius, -1, -1)
+    cv.circle(dummy, center, radius, np.inf, -1)
 
     # print(dummy[1500, 3000])
 
@@ -87,14 +87,14 @@ def phase_unwrap(img: np.ndarray, stack, center, radius) -> np.ndarray:
     while stack:
         x, y = stack[0]
         neighbours = [coord for coord in [(x-1,y),(x+1,y),(x,y-1),(x,y+1)]]
-        wrapped = [coord for coord in neighbours if dummy[coord] == -1]
+        wrapped = [coord for coord in neighbours if dummy[coord] == np.inf]
         # pdb.set_trace()
         # print(wrapped)
 
         for pixel in wrapped:
-            if iteration % 50000 == 0:
-                # plt.imshow(dummy, cmap='gray')
-                # plt.show()
+            if iteration % 300000 == 0:
+                plt.imshow(dummy, cmap='gray')
+                plt.show()
                 print(iteration, len(stack))
             if iteration > 3500000:
                 pdb.set_trace()
@@ -111,7 +111,7 @@ def phase_unwrap(img: np.ndarray, stack, center, radius) -> np.ndarray:
             new_neighbours = [coord for coord in [(x1-1,y1),(x1+1,y1),(x1,y1-1),(x1,y1+1)]]
             neighbour_wrapped = False
             for coord in new_neighbours:
-                if dummy[coord] == -1:
+                if dummy[coord] == np.inf:
                     neighbour_wrapped = True
             if neighbour_wrapped:
                 stack.append(pixel)
@@ -123,7 +123,6 @@ if __name__ == "__main__":
     # Load img
     filename = 'isochromatic_processed.jpg'
     img = cv.medianBlur(cv.imread(filename, cv.IMREAD_GRAYSCALE), 5) 
-    img[964, 2437] = 200
     # import pdb
     # pdb.set_trace()
     r = 1050
