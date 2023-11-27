@@ -5,7 +5,7 @@ import pdb
 from functions import mask_circ_img
 
 
-def phase_unwrap(img: np.ndarray, stack, centre, radius, dummy) -> np.ndarray:
+def phase_unwrap(img: np.ndarray, stack, dummy) -> np.ndarray:
     """
     input stack is list of isotropic points
     """
