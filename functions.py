@@ -19,12 +19,23 @@ def mask_circ_img(img: np.ndarray, center: (int, int), radius: int) -> np.ndarra
     mask = np.zeros(img.shape, dtype=img.dtype)
     mask = cv.circle(mask, center, radius, 255, -1)
 
-    return cv.bitwise_and(img, mask)
+    return cv.bitwise_and(img, mask)     
+
+def mask_to_dummy(mask: np.ndarray) -> np.ndarray:
+    """
+    Returns array of nan inside the ROI, and np.inf outside the mask
+    """
+    return ((mask // 255)) * np.inf
+
+
 
 if __name__ == "__main__":
     print("Running test mask...")
-    img = cv.imread("isochromatic.jpg")
-    img_masked = mask_circ_img(img, (3030, 1770), 1050)
+    # img = cv.imread("isochromatic.jpg")
+    # img_masked = mask_circ_img(img, (3030, 1770), 1050)
 
-    plt.imshow(img_masked, cmap='gray')
+    # plt.imshow(img_masked, cmap='gray')
+    # plt.show()
+
+    plt.imshow(cv.imread('img/results/ring_isochr_wr.jpg'), cmap='gray')
     plt.show()
