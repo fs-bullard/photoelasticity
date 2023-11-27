@@ -14,7 +14,7 @@ def phase_unwrap_isoclinic(img: np.ndarray, stack, centre, radius, dummy) -> np.
     dummy[:,:] = -1
 
     # Need to change if shape not circle
-    # -2 outside the mask, -1 inside the mask
+    # np.inf outside the mask, -1 inside the mask
     cv.circle(dummy, centre, radius, np.inf, -1)
 
     # print(dummy[1500, 3000])
