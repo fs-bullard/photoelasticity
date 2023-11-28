@@ -1,23 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2 as cv
-import pdb
 from functions import mask_circ_img
 
-def phase_unwrap_isoclinic(img: np.ndarray, stack, centre, radius, dummy) -> np.ndarray:
+def phase_unwrap_isoclinic(img: np.ndarray, stack, dummy) -> np.ndarray:
     """
     input stack is list of isotropic points
     """
-
-    dummy = np.zeros(img.shape)
-
-    dummy[:,:] = -1
-
-    # Need to change if shape not circle
-    # np.inf outside the mask, -1 inside the mask
-    cv.circle(dummy, centre, radius, np.inf, -1)
-
-    # print(dummy[1500, 3000])
 
     def unwrap(pixel, previous) -> float:
         """
@@ -60,27 +49,51 @@ def phase_unwrap_isoclinic(img: np.ndarray, stack, centre, radius, dummy) -> np.
                 stack.append(pixel)
         stack.pop(0)
 
-    return (((abs(dummy)/ 255) % 2) - 1) * (np.pi/4)
+    dummy[dummy == -np.inf] = -1000
+    dummy[dummy == np.inf] = -1000
+    return ((((dummy/ 255) + 1) % 2) - 1) * (np.pi/2)
 
 if __name__ == "__main__":
+    # # Load img
+    # filename = 'img/results/disc_isocl_wr.jpg'
+    # img = cv.medianBlur(cv.imread(filename, cv.IMREAD_GRAYSCALE), 5) 
+    # r = 1050
+    # centre = (3030, 1770)
+    # plt.imshow(mask_circ_img(img, centre, r), cmap='gray')
+    # plt.show()
+
+    # # Set stack as isotropic points
+    # stack = [(centre[1], centre[0] - r), (centre[1], centre[0] + r)]
+
+    # #create dummy array to be populated by unwrapped pixels
+    # dummy = np.zeros(img.shape)
+    # dummy[:,:] = None
+    # # None outside the mask, np.inf inside the mask
+    # cv.circle(dummy, centre, r, np.inf, -1)
+
+    # img_unwrapped = phase_unwrap_isoclinic(img, stack, centre, r, dummy)
+    # # img_unwrapped = np.unwrap(mask_circ_img(img, centre, r), period=255)
+
+    # plt.imshow(img_unwrapped, cmap='gray')
+    # plt.show()
+
     # Load img
-    filename = 'isochromatic_processed.jpg'
+    filename = 'img/results/ring_isocl_wr.jpg'
     img = cv.medianBlur(cv.imread(filename, cv.IMREAD_GRAYSCALE), 5) 
-    r = 1050
-    centre = (3030, 1770)
-    plt.imshow(mask_circ_img(img, centre, r), cmap='gray')
+    plt.imshow(img, cmap='gray')
     plt.show()
 
     # Set stack as isotropic points
-    stack = [(centre[1], centre[0] - r), (centre[1], centre[0] + r)]
+    stack = [(2200, 2200), (2200, 2000), (1100, 2200), (1100, 2000), (1100, 3700), (2300, 3700), (1700, 2100)]
 
     #create dummy array to be populated by unwrapped pixels
-    dummy = np.zeros(img.shape)
-    dummy[:,:] = None
-    # None outside the mask, np.inf inside the mask
-    cv.circle(dummy, centre, r, np.inf, -1)
+    dummy = cv.imread('img/masks/ring_mask.jpg', cv.IMREAD_GRAYSCALE)
+    dummy = dummy.astype(float)
+     # None outside the mask, np.inf inside the mask
+    dummy[dummy == 0] = -np.inf
+    dummy[dummy == 255] = np.inf
 
-    img_unwrapped = phase_unwrap_isoclinic(img, stack, centre, r, dummy)
+    img_unwrapped = phase_unwrap_isoclinic(img, stack, dummy)
     # img_unwrapped = np.unwrap(mask_circ_img(img, centre, r), period=255)
 
     plt.imshow(img_unwrapped, cmap='gray')
