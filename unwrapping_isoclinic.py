@@ -78,7 +78,7 @@ if __name__ == "__main__":
     # plt.show()
 
     # Load img
-    filename = 'img/results/ring_isocl_wr.jpg'
+    filename = 'img/ring/results/ring_isocl_wr.jpg'
     img = cv.medianBlur(cv.imread(filename, cv.IMREAD_GRAYSCALE), 5) 
     plt.imshow(img, cmap='gray')
     plt.show()
@@ -87,7 +87,7 @@ if __name__ == "__main__":
     stack = [(2200, 2200), (2200, 2000), (1100, 2200), (1100, 2000), (1100, 3700), (2300, 3700), (1700, 2100)]
 
     #create dummy array to be populated by unwrapped pixels
-    dummy = cv.imread('img/masks/ring_mask.jpg', cv.IMREAD_GRAYSCALE)
+    dummy = cv.imread('img/ring/masks/ring_mask_phase_shifting.jpg', cv.IMREAD_GRAYSCALE)
     dummy = dummy.astype(float)
      # None outside the mask, np.inf inside the mask
     dummy[dummy == 0] = -np.inf
