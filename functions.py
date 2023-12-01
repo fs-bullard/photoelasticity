@@ -23,9 +23,12 @@ def mask_circ_img(img: np.ndarray, center: (int, int), radius: int) -> np.ndarra
 
 def mask_to_dummy(mask: np.ndarray) -> np.ndarray:
     """
-    Returns array of nan inside the ROI, and np.inf outside the mask
+    Returns array of -np.inf inside the ROI, and np.inf outside the mask
     """
-    return ((mask // 255)) * np.inf
+    dummy = mask.astype(float)
+    dummy[dummy == 0] = -np.inf
+    dummy[dummy == 255] = np.inf
+    return dummy
 
 
 
