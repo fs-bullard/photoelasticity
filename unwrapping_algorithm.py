@@ -48,6 +48,8 @@ def phase_unwrap(img: np.ndarray, stack, dummy) -> np.ndarray:
                 stack.append(pixel)
         stack.pop(0)
 
+    dummy[dummy == -np.inf] = 0
+    dummy[dummy == np.inf] = 0
     return abs(dummy)/ 255
 
 if __name__ == "__main__":
