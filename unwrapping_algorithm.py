@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cv2 as cv
 import pdb
-from functions import mask_circ_img
+from functions import mask_to_dummy
 
 
 def phase_unwrap(img: np.ndarray, stack, dummy) -> np.ndarray:
@@ -19,7 +19,6 @@ def phase_unwrap(img: np.ndarray, stack, dummy) -> np.ndarray:
     
     for seed in stack:
         dummy[seed] = img[seed]
-    print(img[stack[0]], img[stack[1]])
     
     iteration = 0
     while stack:
@@ -53,24 +52,20 @@ def phase_unwrap(img: np.ndarray, stack, dummy) -> np.ndarray:
 
 if __name__ == "__main__":
     # Load img
-    filename = 'isochromatic_processed.jpg'
+    filename = 'img/disc/results/disc_isochr_wr.jpg'
     img = cv.medianBlur(cv.imread(filename, cv.IMREAD_GRAYSCALE), 5) 
-    r = 1050
-    centre = (3030, 1770)
-    plt.imshow(mask_circ_img(img, centre, r), cmap='gray')
-    plt.show()
+    mask = cv.imread('img/disc/mask/disc_mask_phase_shifting.jpg', cv.IMREAD_GRAYSCALE)
 
     # Set stack as isotropic points
-    stack = [(centre[1], centre[0] - r), (centre[1], centre[0] + r)]
-
+    stack = [(1600, 2000), (1600, 4200)]
     #create dummy array to be populated by unwrapped pixels
-    dummy = np.zeros(img.shape)
-    dummy[:,:] = None
-    # None outside the mask, np.inf inside the mask
-    cv.circle(dummy, centre, r, np.inf, -1)
+    dummy = mask_to_dummy(mask)
 
-    img_unwrapped = phase_unwrap(img, stack, centre, r, dummy)
-    # img_unwrapped = np.unwrap(mask_circ_img(img, centre, r), period=255)
+    plt.imshow(dummy, cmap='gray')
+    plt.show()
+
+    # Unwrap
+    img_unwrapped = phase_unwrap(img, stack, dummy)
 
     plt.imshow(img_unwrapped, cmap='gray')
     plt.show()
