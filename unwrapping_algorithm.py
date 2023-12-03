@@ -27,7 +27,7 @@ def phase_unwrap(img: np.ndarray, stack, dummy) -> np.ndarray:
         wrapped = [coord for coord in neighbours if dummy[coord] == np.inf]
 
         for pixel in wrapped:
-            if iteration % 300000 == 0:
+            if iteration % 500000 == 0:
                 # plt.imshow(dummy, cmap='gray')
                 # plt.show()
                 print(iteration, len(stack))
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     mask = cv.imread('img/disc/mask/disc_mask_phase_shifting.jpg', cv.IMREAD_GRAYSCALE)
 
     # Set stack as isotropic points
-    stack = [(1600, 2000), (1600, 4200)]
+    stack = [(2000, 2200), (2000, 4200)]
     #create dummy array to be populated by unwrapped pixels
     dummy = mask_to_dummy(mask)
 
