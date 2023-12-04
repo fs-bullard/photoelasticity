@@ -46,9 +46,9 @@ def phase_unwrap_isoclinic(img: np.ndarray, stack, dummy) -> np.ndarray:
                 stack.append(pixel)
         stack.pop(0)
 
-    dummy[dummy == -np.inf] = 0
-    dummy[dummy == np.inf] = 0
-    return ((((dummy/ 255) + 0.5) % 2) - 1) * (np.pi/2)
+    dummy[dummy == -np.inf] = 255/2
+    dummy[dummy == np.inf] = 255/2
+    return ((((dummy / 255) + 0.5) % 2) - 1) * (np.pi/2)
 
 if __name__ == "__main__":
     # Load img

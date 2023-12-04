@@ -28,7 +28,12 @@ def phase_unwrap(img: np.ndarray, stack, dummy) -> np.ndarray:
 
         for pixel in wrapped:
             if iteration % 500000 == 0:
-                # plt.imshow(dummy, cmap='gray')
+                # dummy_dummy = np.copy(dummy)
+                # dummy_dummy[dummy_dummy == -np.inf] = 0
+                # dummy_dummy[dummy_dummy == np.inf] = 0
+                # dummy_dummy = np.nan_to_num(abs(dummy_dummy) / 255)
+                # plt.imsave(f'img/disc/results/unwrapping_steps/unwrapping{int(iteration/500000)}.jpg', dummy_dummy, cmap='gray')
+                # plt.imshow(dummy_dummy, cmap='gray')
                 # plt.show()
                 print(iteration, len(stack))
             # if iteration > 3500000:
@@ -50,21 +55,21 @@ def phase_unwrap(img: np.ndarray, stack, dummy) -> np.ndarray:
 
     dummy[dummy == -np.inf] = 0
     dummy[dummy == np.inf] = 0
-    return abs(dummy)/ 255
+    return abs(dummy) / 255
 
 if __name__ == "__main__":
     # Load img
-    filename = 'img/disc/results/disc_isochr_wr.jpg'
+    filename = 'img/disc/results/disc_isochr_wr_isocl_unwr.jpg'
     img = cv.medianBlur(cv.imread(filename, cv.IMREAD_GRAYSCALE), 5) 
-    mask = cv.imread('img/disc/mask/disc_mask_phase_shifting.jpg', cv.IMREAD_GRAYSCALE)
+    mask = cv.imread('img/disc/mask/disc_mask_phase_shifting_2.jpg', cv.IMREAD_GRAYSCALE)
+    plt.imshow(img, cmap='gray')
+    plt.show()
 
     # Set stack as isotropic points
     stack = [(2000, 2200), (2000, 4200)]
     #create dummy array to be populated by unwrapped pixels
     dummy = mask_to_dummy(mask)
 
-    plt.imshow(dummy, cmap='gray')
-    plt.show()
 
     # Unwrap
     img_unwrapped = phase_unwrap(img, stack, dummy)
