@@ -1,14 +1,13 @@
 import cv2 as cv
 import matplotlib.pyplot as plt
-import numpy as np
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import matplotlib as mpl
 
 mpl.rcParams["font.size"] = 16
 fig, ax = plt.subplots(figsize=(8,8))
 ax.axis('off')
-img = cv.imread('img/disc/results/disc_isocl_wr_masked.jpg', cv.IMREAD_GRAYSCALE)
-arr = ax.imshow(img, cmap='RdGy_r')
+img = cv.imread('img/ring/results/ring_isocl_wr_masked.jpg', cv.IMREAD_GRAYSCALE)
+arr = ax.imshow(img, cmap='gray')
 plt.gcf().set_tight_layout(True) # To prevent the xlabel being cut off
 
 divider = make_axes_locatable(ax)

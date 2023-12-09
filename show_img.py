@@ -1,8 +1,10 @@
 import matplotlib.pyplot as plt
 import cv2 as cv
 
-filename = 'img/disc/results/disc_isocl_unwr.jpg'
+fig, ax = plt.subplots(figsize=(8,8))
+ax.axis('off')
+
+filename = 'img/ring/results/ring_isochr_wr_masked.jpg'
 img = cv.medianBlur(cv.imread(filename, cv.IMREAD_GRAYSCALE), 5) 
-plt.imshow(img, cmap='RdBu')
-plt.imsave('img/disc/results/disc_isocl_unwr_colour.jpg', img, cmap='RdBu')
+ax.imshow(img, cmap='gray')
 plt.show()
