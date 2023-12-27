@@ -24,6 +24,7 @@ def phase_unwrap_isoclinic(img: np.ndarray, stack, dummy) -> np.ndarray:
         x, y = stack[0]
         neighbours = [coord for coord in [(x-1,y),(x+1,y),(x,y-1),(x,y+1)]]
         wrapped = [coord for coord in neighbours if dummy[coord] == np.inf]
+        
         for pixel in wrapped:
             if iteration % 500000 == 0:
                 # plt.imshow(dummy, cmap='gray')

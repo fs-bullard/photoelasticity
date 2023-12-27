@@ -19,5 +19,5 @@ cax = divider.append_axes("bottom", size="5%", pad=0.2)
 cb = plt.colorbar(img, orientation="horizontal", cax=cax)
 cb.set_label('Principle Stress Difference [$MPa$]')
 cb.ax.locator_params(nbins=4)
-
+print(np.max(stress))
 plt.show()
