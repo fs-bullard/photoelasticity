@@ -57,7 +57,7 @@ ring_images = ["report/ring/report_ring_isoclinic_wrapped.jpg", "report/ring/rep
 
 image_paths = [disc_images, ring_images]
 row_labels = ['Disc', 'Ring']
-col_labels = ['Wrapped \n Isoclinic Parameter \n' + r'$\theta$', 'Unwrapped \n Isoclinic Parameter \n' + r'$\theta_\mathrm{unwrapped}$', 'Isochromatic \n Parameter \n' + r'$\delta$', 'Stress Map \n (MPa) \n' + r'$\sigma_1 - \sigma_2$']
+col_labels = ['Wrapped \n Isoclinic Parameter \n' + r'$\theta$', 'Unwrapped \n Isoclinic Parameter \n' + r'$\theta_\mathrm{unwrapped}$', 'Isochromatic \n Parameter \n' + r'$\delta$', 'Maximum Shear \n Stress (MPa) \n' + r'$\tau_\mathrm{max}$']
 
 # Determine the max stress for the disc and ring
 disc_fringe = np.load('img/disc/results/disc_isochr_unwr_isocl_unwr.npy')
@@ -66,7 +66,7 @@ ring_fringe = np.load('img/ring/results/ring_isochr_unwr_isocl_unwr.npy')
 max_stress = np.max(disc_fringe) * 38200 / 0.012 / 1000000
 
 # Set custom colorbar range for each column
-colorbar_ranges = [[r'$-\pi/4$', '0', r'$\pi/4$'], [r'$-\pi/2$', '0', r'$\pi/2$'], ['0', r'$\pi$', r'$2\pi$'], ['0', '16', '32']]  # Adjust the range as needed
+colorbar_ranges = [[r'$-\pi/4$', '0', r'$\pi/4$'], [r'$-\pi/2$', '0', r'$\pi/2$'], [r'$-\pi$', '0', r'$\pi$'], ['0', '8', '16']]  # Adjust the range as needed
 
 
 
